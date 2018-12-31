@@ -168,6 +168,12 @@ executable day01
   default-language: Haskell2010
 
 test-suite doctests
+  -- This lists the executables for which doctest will be run.  Normally you
+  -- only need to list the executable you are currently working on, since you
+  -- don't need the doctests to be run for all your already solved exercises.
+  --
+  -- So when you finish the solution for day 1 and start working on day 2, you
+  -- will replace `exe:day01` with `exe:day02`.
   x-doctest-components: lib exe:day01
   type:                exitcode-stdio-1.0
   main-is:             DocTest.hs
