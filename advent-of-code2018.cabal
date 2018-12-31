@@ -1,0 +1,179 @@
+cabal-version: 1.12
+
+name:           advent-of-code2018
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/cdepillabout/advent-of-code2018#readme>
+homepage:       https://github.com/cdepillabout/advent-of-code2018#readme
+bug-reports:    https://github.com/cdepillabout/advent-of-code2018/issues
+author:         Dennis Gosnell
+maintainer:     cdep.illabout@gmail.com
+copyright:      Copyright (c) 2018 Dennis Gosnell
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+custom-setup
+  setup-depends:     base
+                   , Cabal
+                   , cabal-doctest >=1.0.2 && <1.1
+
+source-repository head
+  type: git
+  location: https://github.com/cdepillabout/advent-of-code2018
+
+-- This is a library that can hold common code.  You may want to put any common
+-- code that you share between solutions here.  Although since this basically a
+-- competitive programming competition, it may just be easier to copy and paste
+-- things you need.
+library
+  -- You can add your own modules here.
+  exposed-modules:  Lib
+  hs-source-dirs:   src
+  -- Add any library dependencies you might need here.
+  build-depends:    base >=4.11 && <5
+                  , aeson
+                  , bytestring
+                  , conduit
+                  , containers
+                  , lens
+                  , megaparsec
+                  , pretty-simple
+                  , text
+                  , unordered-containers
+  ghc-options: -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports
+  -- Commonly used language extensions.
+  --
+  -- Add language extensions you want to use here so it doesn't clutter the top
+  -- of your Haskell files.
+  default-extensions: AutoDeriveTypeable
+                      BangPatterns
+                      BinaryLiterals
+                      ConstraintKinds
+                      DataKinds
+                      DefaultSignatures
+                      DeriveDataTypeable
+                      DeriveFoldable
+                      DeriveFunctor
+                      DeriveGeneric
+                      DeriveTraversable
+                      DoAndIfThenElse
+                      EmptyCase
+                      EmptyDataDecls
+                      ExistentialQuantification
+                      ExplicitNamespaces
+                      FlexibleContexts
+                      FlexibleInstances
+                      FunctionalDependencies
+                      GADTs
+                      GeneralizedNewtypeDeriving
+                      InstanceSigs
+                      KindSignatures
+                      LambdaCase
+                      MultiParamTypeClasses
+                      MultiWayIf
+                      NamedFieldPuns
+                      OverloadedStrings
+                      PartialTypeSignatures
+                      PatternGuards
+                      PolyKinds
+                      RankNTypes
+                      RecordWildCards
+                      ScopedTypeVariables
+                      StandaloneDeriving
+                      TupleSections
+                      TypeFamilies
+                      TypeSynonymInstances
+                      ViewPatterns
+  default-language: Haskell2010
+
+-- This is an example of a Haskell executable that you can use to solve one of
+-- the Advent of Code problems.
+--
+-- This template should be reusable for each of the days.  Just copy and paste
+-- this executable block.  Don't forget to change the executable name and main-is
+-- file name.
+--
+-- You can compile the executable with the following command:
+--
+-- $ stack build --fast advent-of-code2018:day01
+--
+-- (Or just `stack build`.)
+--
+-- You can run the executable like the following:
+--
+-- $ stack exec -- day01
+executable day01
+  main-is:          Day01.hs
+  hs-source-dirs:   app
+  ghc-options:      -threaded -rtsopts -with-rtsopts=-N
+  -- Add any library dependencies you might need here.
+  build-depends:    advent-of-code2018
+                  , base >=4.11 && <5
+                  , aeson
+                  , bytestring
+                  , conduit
+                  , containers
+                  , lens
+                  , megaparsec
+                  , pretty-simple
+                  , text
+                  , unordered-containers
+  ghc-options: -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports
+  -- Commonly used language extensions.
+  --
+  -- Add language extensions you want to use here so it doesn't clutter the top
+  -- of your Haskell files.
+  default-extensions: AutoDeriveTypeable
+                      BangPatterns
+                      BinaryLiterals
+                      ConstraintKinds
+                      DataKinds
+                      DefaultSignatures
+                      DeriveDataTypeable
+                      DeriveFoldable
+                      DeriveFunctor
+                      DeriveGeneric
+                      DeriveTraversable
+                      DoAndIfThenElse
+                      EmptyCase
+                      EmptyDataDecls
+                      ExistentialQuantification
+                      ExplicitNamespaces
+                      FlexibleContexts
+                      FlexibleInstances
+                      FunctionalDependencies
+                      GADTs
+                      GeneralizedNewtypeDeriving
+                      InstanceSigs
+                      KindSignatures
+                      LambdaCase
+                      MultiParamTypeClasses
+                      MultiWayIf
+                      NamedFieldPuns
+                      OverloadedStrings
+                      PartialTypeSignatures
+                      PatternGuards
+                      PolyKinds
+                      RankNTypes
+                      RecordWildCards
+                      ScopedTypeVariables
+                      StandaloneDeriving
+                      TupleSections
+                      TypeFamilies
+                      TypeSynonymInstances
+                      ViewPatterns
+  default-language: Haskell2010
+
+-- test-suite doctests
+--   type:                exitcode-stdio-1.0
+--   main-is:             DocTest.hs
+--   hs-source-dirs:      test
+--   build-depends:       base
+--                      , doctest
+--                      , QuickCheck
+--                      , template-haskell
+--   default-language:    Haskell2010
+--   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
