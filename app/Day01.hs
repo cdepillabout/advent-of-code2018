@@ -1,15 +1,26 @@
+
+-- Here is the main module where you will implement the solution for Day 1.
+--
+-- You can run this file as follows:
+--
+-- $ stack build --fast advent-of-code2018:day01
+-- $ stack exec -- day01
+--
+-- You should be able to copy this file to another file called Day02.hs to
+-- start working on the solution for Day 2.  You will also have to copy the
+-- exectuable day01 section in the advent-of-code2018.cabal file.
+
 module Main where
 
--- common imports that are often used
+-- These are some common imports that are often used.
 import Control.Lens
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as ByteString
 import Data.Text (Text)
 import qualified Data.Text as Text
 
--- you can import from modules defined in src/
+-- You can import from shared modules defined in src/.
 import Lib (someFunc)
-
 
 main :: IO ()
 main =
