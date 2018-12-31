@@ -1,13 +1,14 @@
-
 module Main where
 
-import Build_doctests (flags, pkgs, module_sources)
+import Build_doctests (Component (..), components)
+import Data.Foldable (for_)
 import Test.DocTest (doctest)
 
 main :: IO ()
-main = do
-  doctest args
-  where
-    args :: [String]
-    args = flags ++ pkgs ++ module_sources
-
+main =
+  for_ components $ \(Component name flags pkgs sources) -> do
+    print name
+    putStrLn "----------------------------------------"
+    let args = flags ++ pkgs ++ sources
+    -- for_ args putStrLn
+    doctest args

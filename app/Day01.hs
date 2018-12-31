@@ -14,5 +14,9 @@ import Lib (someFunc)
 main :: IO ()
 main = interact mySolution
 
+-- |
+--
+-- >>> mySolution "hello"
+-- "hello"
 mySolution :: String -> String
 mySolution = id

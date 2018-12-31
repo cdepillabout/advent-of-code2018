@@ -10,7 +10,7 @@ maintainer:     cdep.illabout@gmail.com
 copyright:      Copyright (c) 2018 Dennis Gosnell
 license:        BSD3
 license-file:   LICENSE
-build-type:     Simple
+build-type:     Custom
 extra-source-files:
     README.md
     ChangeLog.md
@@ -167,13 +167,14 @@ executable day01
                       ViewPatterns
   default-language: Haskell2010
 
--- test-suite doctests
---   type:                exitcode-stdio-1.0
---   main-is:             DocTest.hs
---   hs-source-dirs:      test
---   build-depends:       base
---                      , doctest
---                      , QuickCheck
---                      , template-haskell
---   default-language:    Haskell2010
---   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
+test-suite doctests
+  x-doctest-components: lib exe:day01
+  type:                exitcode-stdio-1.0
+  main-is:             DocTest.hs
+  hs-source-dirs:      test
+  build-depends:       base
+                     , doctest
+                     , QuickCheck
+                     , template-haskell
+  default-language:    Haskell2010
+  ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
