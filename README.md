@@ -73,3 +73,18 @@ There is a big list of language pragmas and libraries that have already been
 added to the cabal file.  These are widely-used language pragmas and libraries.
 This makes it a little easier to just get to work on your solution without
 having to manually add pragmas and libraries.
+
+### Continuous Building
+
+Some people like to have `stack` rebuild their code every time they save in
+their editor.  This is easy to do with the `--file-watch` argument to stack:
+
+```sh
+$ stack build --fast --file-watch advent-of-code2018:day01
+```
+
+It is also possible with `test`:
+
+```sh
+$ stack test --fast --file-watch
+```
