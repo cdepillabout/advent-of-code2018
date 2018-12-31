@@ -1,6 +1,6 @@
 # Advent of Code 2018 Haskell Starter Kit
 
-This is a starter kit for writing attempting the Advent of Code 2018 problems
+This is a starter kit for attempting the Advent of Code 2018 problems
 in Haskell.
 
 This repo gives you a few niceties:
