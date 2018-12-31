@@ -15,6 +15,7 @@ extra-source-files:
     README.md
     ChangeLog.md
 
+-- This custom setup is so that the doctests can be easily run.
 custom-setup
   setup-depends:     base
                    , Cabal
@@ -26,24 +27,28 @@ source-repository head
 
 -- This is a library that can hold common code.  You may want to put any common
 -- code that you share between solutions here.  Although since this basically a
--- competitive programming competition, it may just be easier to copy and paste
--- things you need.
+-- programming competition, it may just be easier to copy and paste functions
+-- you need in more than one module.
 library
   -- You can add your own modules here.
-  exposed-modules:  Lib
-  hs-source-dirs:   src
+  exposed-modules:    Lib
+  hs-source-dirs:     src
+  -- Commonly used libraries.
+  --
   -- Add any library dependencies you might need here.
-  build-depends:    base >=4.11 && <5
-                  , aeson
-                  , bytestring
-                  , conduit
-                  , containers
-                  , lens
-                  , megaparsec
-                  , pretty-simple
-                  , text
-                  , unordered-containers
-  ghc-options: -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports
+  build-depends:      base >=4.11 && <5
+                    , aeson
+                    , attoparsec
+                    , bytestring
+                    , conduit
+                    , conduit-extra
+                    , containers
+                    , lens
+                    , megaparsec
+                    , pretty-simple
+                    , text
+                    , unordered-containers
+  ghc-options:        -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports -Wno-unused-top-binds
   -- Commonly used language extensions.
   --
   -- Add language extensions you want to use here so it doesn't clutter the top
@@ -108,20 +113,23 @@ library
 executable day01
   main-is:          Day01.hs
   hs-source-dirs:   app
-  ghc-options:      -threaded -rtsopts -with-rtsopts=-N
+  -- Commonly used libraries.
+  --
   -- Add any library dependencies you might need here.
-  build-depends:    advent-of-code2018
-                  , base >=4.11 && <5
-                  , aeson
-                  , bytestring
-                  , conduit
-                  , containers
-                  , lens
-                  , megaparsec
-                  , pretty-simple
-                  , text
-                  , unordered-containers
-  ghc-options: -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports
+  build-depends:      advent-of-code2018
+                    , base >=4.11 && <5
+                    , aeson
+                    , attoparsec
+                    , bytestring
+                    , conduit
+                    , conduit-extra
+                    , containers
+                    , lens
+                    , megaparsec
+                    , pretty-simple
+                    , text
+                    , unordered-containers
+  ghc-options:        -threaded -rtsopts -with-rtsopts=-N -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports -Wno-unused-top-binds
   -- Commonly used language extensions.
   --
   -- Add language extensions you want to use here so it doesn't clutter the top
@@ -167,6 +175,16 @@ executable day01
                       ViewPatterns
   default-language: Haskell2010
 
+-- This is a test suite that will run doctests on your code.  This is really
+-- nice when you want to write a small test inline to make sure your code is
+-- working.  It is lighter weight than pulling in a whole testing framework,
+-- but I still find it very helpful for these types of programming contests.
+--
+-- There are examples of writing doctests in both the library and executable.
+--
+-- You can run the doctests with the following command:
+--
+-- $ stack test --fast
 test-suite doctests
   -- This lists the executables for which doctest will be run.  Normally you
   -- only need to list the executable you are currently working on, since you
