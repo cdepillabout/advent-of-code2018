@@ -3,8 +3,8 @@
 --
 -- You can run this file as follows:
 --
--- $ stack build --fast advent-of-code2018:day01
--- $ stack exec -- day01
+-- stack build --fast advent-of-code2018:day01
+-- stack exec -- day01
 --
 -- You should be able to copy this file to another file called Day02.hs to
 -- start working on the solution for Day 2.  You will also have to copy the
