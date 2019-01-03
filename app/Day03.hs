@@ -136,5 +136,4 @@ mySolutionPart2 input =
   let claims = fromMaybe (error "could not parse") $ parseMaybe parseClaims input
       allLayout = create $ Data.Vector.Mutable.replicate (1000 * 1000) mempty >>= updateVecWithClaims claims :: Vector (Set Int)
       maybeUnoverlappingClaim = List.find (doesntOverlap allLayout) claims
-      -- moreThanOne = Vector.filter (\s -> Set.size s > 1) allLayout
   in pack $ show $ fromMaybe (error "couldn't find") maybeUnoverlappingClaim
