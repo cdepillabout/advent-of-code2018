@@ -323,8 +323,10 @@ executable day04
                     , containers
                     , lens
                     , megaparsec
+                    , parsec
                     , pretty-simple
                     , text
+                    , time
                     , unordered-containers
                     , vector
   ghc-options:        -threaded -rtsopts -with-rtsopts=-N -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports -Wno-unused-top-binds
@@ -390,7 +392,7 @@ test-suite doctests
   --
   -- So when you finish the solution for day 1 and start working on day 2, you
   -- will replace `exe:day01` with `exe:day02`.
-  x-doctest-components: lib exe:day03
+  x-doctest-components: lib exe:day04
   type:                exitcode-stdio-1.0
   main-is:             DocTest.hs
   hs-source-dirs:      test
