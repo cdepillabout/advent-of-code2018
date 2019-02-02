@@ -32,6 +32,7 @@ source-repository head
 library
   -- You can add your own modules here.
   exposed-modules:    Lib
+                    , MyLens
   hs-source-dirs:     src
   -- Commonly used libraries.
   --
@@ -240,8 +241,74 @@ library
 --                       ViewPatterns
 --   default-language: Haskell2010
 
-executable day03
-  main-is:          Day03.hs
+-- executable day03
+--   main-is:          Day03.hs
+--   hs-source-dirs:   app
+--   -- Commonly used libraries.
+--   --
+--   -- Add any library dependencies you might need here.
+--   build-depends:      advent-of-code2018
+--                     , base >=4.11 && <5
+--                     , aeson
+--                     , attoparsec
+--                     , bytestring
+--                     , conduit
+--                     , conduit-extra
+--                     , containers
+--                     , lens
+--                     , megaparsec
+--                     , pretty-simple
+--                     , text
+--                     , unordered-containers
+--                     , vector
+--   ghc-options:        -threaded -rtsopts -with-rtsopts=-N -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports -Wno-unused-top-binds
+--   -- Commonly used language extensions.
+--   --
+--   -- Add language extensions you want to use here so it doesn't clutter the top
+--   -- of your Haskell files.
+--   default-extensions: AutoDeriveTypeable
+--                       BangPatterns
+--                       BinaryLiterals
+--                       ConstraintKinds
+--                       DataKinds
+--                       DefaultSignatures
+--                       DeriveDataTypeable
+--                       DeriveFoldable
+--                       DeriveFunctor
+--                       DeriveGeneric
+--                       DeriveTraversable
+--                       DoAndIfThenElse
+--                       EmptyCase
+--                       EmptyDataDecls
+--                       ExistentialQuantification
+--                       ExplicitNamespaces
+--                       FlexibleContexts
+--                       FlexibleInstances
+--                       FunctionalDependencies
+--                       GADTs
+--                       GeneralizedNewtypeDeriving
+--                       InstanceSigs
+--                       KindSignatures
+--                       LambdaCase
+--                       MultiParamTypeClasses
+--                       MultiWayIf
+--                       NamedFieldPuns
+--                       OverloadedStrings
+--                       PartialTypeSignatures
+--                       PatternGuards
+--                       PolyKinds
+--                       RankNTypes
+--                       RecordWildCards
+--                       ScopedTypeVariables
+--                       StandaloneDeriving
+--                       TupleSections
+--                       TypeFamilies
+--                       TypeSynonymInstances
+--                       ViewPatterns
+--   default-language: Haskell2010
+
+executable day04
+  main-is:          Day04.hs
   hs-source-dirs:   app
   -- Commonly used libraries.
   --
