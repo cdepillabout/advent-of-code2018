@@ -3,26 +3,6 @@
 
 module MyLens where
 
-data Name = Name
-  { nameFirst :: String
-  , nameLast :: String
-  } deriving Show
-
-data User = User
-  { glucoseLevel :: Int
-  , userName :: Name
-  } deriving Show
-
-eric :: User
-eric =
-  User
-    { glucoseLevel = 400
-    , userName =
-        Name
-          { nameFirst = "Eric"
-          , nameLast = "Jelliffe"
-          }
-    }
 
 -- data Lens s a = Lens
 --   { getter :: s -> a
@@ -80,14 +60,54 @@ eric =
 -- updatedEricFirstName =
 --   (setter userFirstNameLens) eric "EEERRRRRIIIICCCCCC"
 
-type Lens s a =
-  forall f. Functor f => (a -> f a) -> s -> f s
+
+data Name = Name
+  { nameFirst :: String
+  , nameLast :: String
+  } deriving Show
+
+data User = User
+  { glucoseLevel :: Int
+  , userName :: Name
+  } deriving Show
+
+eric :: User
+eric =
+  User
+    { glucoseLevel = 400
+    , userName =
+        Name
+          { nameFirst = "Eric"
+          , nameLast = "Jelliffe"
+          }
+    }
+
+type Lens s a = forall f. Functor f => (a -> f a) -> s -> f s
 
 -- userGlucoseLens :: Lens User Int
 userGlucoseLens
   :: forall f. Functor f
   => (Int -> f Int) -> User -> f User
 userGlucoseLens = undefined
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- forallExample1 :: forall a. (a -> a) -> Int
 -- -- forallExample1 a2a = a2a @Int 3
@@ -145,5 +165,3 @@ userGlucoseLens = undefined
 
 -- myFunction :: forall a. Show a => a -> String
 -- myFunction a = show a ++ show a
-
-
