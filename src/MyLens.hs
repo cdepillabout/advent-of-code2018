@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 
@@ -61,15 +62,6 @@ module MyLens where
 --   (setter userFirstNameLens) eric "EEERRRRRIIIICCCCCC"
 
 
-data Name = Name
-  { nameFirst :: String
-  , nameLast :: String
-  } deriving Show
-
-data User = User
-  { glucoseLevel :: Int
-  , userName :: Name
-  } deriving Show
 
 eric :: User
 eric =
@@ -88,20 +80,82 @@ type Lens s a = forall f. Functor f => (a -> f a) -> s -> f s
 userGlucoseLens
   :: forall f. Functor f
   => (Int -> f Int) -> User -> f User
-userGlucoseLens = undefined
+userGlucoseLens f (User glucoseLevel userName) =
+  fmap (\newGlucoseLevel -> User newGlucoseLevel userName) (f glucoseLevel)
+
+data Const r a = Const r deriving Functor
+
+unConst :: Const r a -> r
+unConst (Const r) = r
+
+-- instance Functor (Const r) where
+--   fmap :: (a -> b) -> Const r a -> Const r b
+--   fmap _ (Const r) = Const r
+
+-- view :: (Lens s a) -> s -> a
+view :: (forall f. Functor f => (a -> f a) -> s -> f s) -> s -> a
+view somelens s = unConst (somelens Const s)
+
+data Identity a = Identity { runIdentity :: a } deriving Functor
+
+-- set :: Lens s a -> a -> s -> s
+set :: ((a -> Identity a) -> s -> Identity s) -> a -> s -> s
+set somelens a s = runIdentity $ somelens (const $ Identity a) s
+
+data User = User
+  { glucoseLevel :: Int
+  , userName :: Name
+  } deriving Show
+
+userNameLens
+  :: forall f. Functor f
+  => (Name -> f Name) -> User -> f User
+  -- :: Lens User Name
+userNameLens f (User glucoseLevel userName) =
+  fmap (\newName -> User glucoseLevel newName) (f userName)
+
+nameFirstLens
+  :: forall f. Functor f
+  => (String -> f String) -> Name -> f Name
+  -- :: Lens Name String
+nameFirstLens f (Name firstN lastN) =
+  fmap (\newFirstName -> Name newFirstName lastN) (f firstN)
 
 
+userFirstNameLens
+  :: forall f. Functor f
+  => (String -> f String) -> User -> f User
+  -- :: Lens User String
+userFirstNameLens = userNameLens . nameFirstLens
+
+-- lens :: (s -> a) -> (s -> a -> s) -> Lens s a
+lens :: (s -> a) -> (s -> a -> s) -> (forall f. Functor f => (a -> f a) -> s -> f s)
+lens s2a s2a2a = undefined
 
 
+data Name = Name
+  { nameFirst :: String
+  , nameLast :: String
+  } deriving Show
 
+namesTraversal
+  :: forall f. Applicative f
+  => (String -> f String) -> Name -> f Name
+  -- :: Traversal Name String
+namesTraversal = undefined
 
+-- traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 
+-- traverseList :: forall f. Applicative f => (a -> f a) -> [a] -> f [a]
+-- traverseList :: Traversal [a] a
 
+-- toListOf :: Traversal s a -> s -> [a]
 
+-- view     :: Lens      s a -> s -> a
 
-
-
-
+userNamesTraversal :: Applicative f => (String -> f String) -> User -> f User
+-- userNamesTraversal :: Traversal User String
+userNamesTraversal = userNameLens . namesTraversal
 
 
 
