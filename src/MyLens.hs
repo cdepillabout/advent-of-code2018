@@ -4,6 +4,10 @@
 
 module MyLens where
 
+import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.Reader (MonadReader(ask))
+import Data.Functor.Contravariant
+
 
 -- data Lens s a = Lens
 --   { getter :: s -> a
@@ -88,13 +92,78 @@ data Const r a = Const r deriving Functor
 unConst :: Const r a -> r
 unConst (Const r) = r
 
+instance Contravariant (Const r) where
+  contramap :: (a -> b) -> Const r b -> Const r a
+  contramap _ (Const r) = Const r
+
+-- class Invariant f where
+--   imap :: (a -> a) -> f a -> f a
+
+-- data MyInv a = MyInv (a -> a)
+
+-- instance Invariant MyInv where
+--   imap a2a (MyInv a2a') = MyInv $ \a -> a2a (a2a' (a2a a))
+
+-- class (Functor f, Contravariant f) => Bivariant f
+
 -- instance Functor (Const r) where
 --   fmap :: (a -> b) -> Const r a -> Const r b
 --   fmap _ (Const r) = Const r
 
 -- view :: (Lens s a) -> s -> a
-view :: (forall f. Functor f => (a -> f a) -> s -> f s) -> s -> a
+-- view :: (forall f. Functor f => (a -> f a) -> s -> f s) -> s -> a
+view :: ((a -> Const a a) -> s -> Const a s) -> s -> a
 view somelens s = unConst (somelens Const s)
+
+type Getting s a = (a -> Const a a) -> s -> Const a s
+
+to :: (s -> a) -> ((a -> Const a a) -> s -> Const a s)
+-- to :: (s -> a) -> Getting s a
+to s2a a2Constaa s = fmap (\_ -> s) $ a2Constaa (s2a s)
+
+type Getter s a = forall f. (Contravariant f, Functor f) => (a -> f a) -> s -> f s
+
+to' :: (s -> a) -> (forall f. (Functor f, Contravariant f) => (a -> f a) -> s -> f s)
+-- to' :: (s -> a) -> Getter s a
+to' s2a a2fa s = contramap s2a (a2fa (s2a s))
+
+-- data Parser a = Parser (String -> a)
+
+-- instance Functor Parser where
+--   fmap :: (a -> b) -> Parser a -> Parser b
+--   -- fmap :: (a -> b) -> (String -> a) -> (String -> b)
+--   fmap a2b (Parser string2a) = Parser $ \string -> a2b (string2a string)
+
+-- data Name = Name String
+
+-- myFunc1 :: Parser String -> Parser Name
+-- myFunc1 parserString = fmap Name parserString
+
+-- data PrettyPrinter a = PrettyPrinter (a -> ByteString)
+
+-- instance Contravariant PrettyPrinter where
+--   contramap :: (a -> b) -> PrettyPrinter b -> PrettyPrinter a
+--   -- contramap :: (a -> b) -> (b -> String) -> (a -> String)
+--   contramap a2b (PrettyPrinter b2string) = PrettyPrinter $ \a -> b2string (a2b a)
+
+-- myFunc2 :: PrettyPrinter Name -> PrettyPrinter String
+-- myFunc2 prettyName = contramap (_ :: String -> Name) prettyName
+
+viewM :: MonadReader s m => (forall f. Functor f => (a -> f a) -> s -> f s) -> m a
+viewM somelens = do
+  s <- ask
+  pure $ unConst (somelens Const s)
+
+myFooM :: (MonadReader User m, MonadIO m) => m Int
+myFooM = do
+  name <- viewM (userNameLens . nameFirstLens)
+  pure (length name)
+
+myFoo :: Int
+myFoo =
+  -- let ret = (viewM (userNameLens . nameFirstLens) :: MonadReader User m => m String) eric
+  let ret = (viewM (userNameLens . nameFirstLens) :: User -> String) eric
+  in length ret
 
 data Identity a = Identity { runIdentity :: a } deriving Functor
 

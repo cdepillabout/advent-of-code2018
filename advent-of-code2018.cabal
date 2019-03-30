@@ -44,8 +44,10 @@ library
                     , conduit
                     , conduit-extra
                     , containers
+                    , contravariant
                     , lens
                     , megaparsec
+                    , mtl
                     , pretty-simple
                     , text
                     , unordered-containers
