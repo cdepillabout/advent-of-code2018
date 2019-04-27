@@ -96,6 +96,13 @@ instance Contravariant (Const r) where
   contramap :: (a -> b) -> Const r b -> Const r a
   contramap _ (Const r) = Const r
 
+instance Monoid r => Applicative (Const r) where
+  pure :: a -> Const r a
+  pure _ = Const mempty
+
+  (<*>) :: Const r (a -> b) -> Const r a -> Const r b
+  Const r1 <*> Const r2 = Const (r1 <> r2)
+
 -- class Invariant f where
 --   imap :: (a -> a) -> f a -> f a
 
@@ -110,7 +117,7 @@ instance Contravariant (Const r) where
 --   fmap :: (a -> b) -> Const r a -> Const r b
 --   fmap _ (Const r) = Const r
 
--- view :: (Lens s a) -> s -> a
+-- view :: Lens s a -> s -> a
 -- view :: (forall f. Functor f => (a -> f a) -> s -> f s) -> s -> a
 view :: ((a -> Const a a) -> s -> Const a s) -> s -> a
 view somelens s = unConst (somelens Const s)
@@ -167,6 +174,11 @@ myFoo =
 
 data Identity a = Identity { runIdentity :: a } deriving Functor
 
+instance Applicative Identity where
+  pure = Identity
+
+  Identity f <*> Identity a = Identity (f a)
+
 -- set :: Lens s a -> a -> s -> s
 set :: ((a -> Identity a) -> s -> Identity s) -> a -> s -> s
 set somelens a s = runIdentity $ somelens (const $ Identity a) s
@@ -197,11 +209,11 @@ userFirstNameLens = userNameLens . nameFirstLens
 
 -- lens :: (s -> a) -> (s -> a -> s) -> Lens s a
 lens :: (s -> a) -> (s -> a -> s) -> (forall f. Functor f => (a -> f a) -> s -> f s)
-lens s2a s2a2a = undefined
+lens _ _ = undefined
 
 
 -- type Lens s a = forall f. Functor f => (a -> f a) -> s -> f s
--- type Traversal s a = forall f. Applicative f => (a -> f a) -> s -> f s
+type Traversal s a = forall f. Applicative f => (a -> f a) -> s -> f s
 
 data Name = Name
   { nameFirst :: String
@@ -212,9 +224,20 @@ namesTraversal
   :: forall f. Applicative f
   => (String -> f String) -> Name -> f Name
   -- :: Traversal Name String
-namesTraversal = undefined
+namesTraversal str2fstr (Name nameFst nameLst) =
+  Name <$> str2fstr nameFst <*> str2fstr nameLst
 
-toListOf namesTraversal ericName :: [String]
+toListOf
+  :: forall a s
+   . ((a -> Const [a] a) -> s -> Const [a] s)
+   -- . (Traversal s a)
+  -> s
+  -> [a]
+toListOf trvsl s = unConst $ trvsl (\a -> Const [a]) s
+
+-- > toListOf namesTraversal ericName :: [String]
+-- > view namesTraversal eric -- error!
+-- > set namesTraversal "dave" eric
 
 ericName :: Name
 ericName = Name "Eric" "Jelliffe"
@@ -226,7 +249,6 @@ ericName = Name "Eric" "Jelliffe"
 -- traverseList :: forall f. Applicative f => (a -> f a) -> [a] -> f [a]
 -- traverseList :: Traversal [a] a
 
--- toListOf :: Traversal s a -> s -> [a]
 
 -- view     :: Lens      s a -> s -> a
 
