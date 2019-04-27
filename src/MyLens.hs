@@ -184,16 +184,14 @@ userNameLens f (User glucoseLevel userName) =
   fmap (\newName -> User glucoseLevel newName) (f userName)
 
 nameFirstLens
-  :: forall f. Functor f
-  => (String -> f String) -> Name -> f Name
+  :: forall f. Functor f => (String -> f String) -> Name -> f Name
   -- :: Lens Name String
 nameFirstLens f (Name firstN lastN) =
   fmap (\newFirstName -> Name newFirstName lastN) (f firstN)
 
 
 userFirstNameLens
-  :: forall f. Functor f
-  => (String -> f String) -> User -> f User
+  :: forall f. Functor f => (String -> f String) -> User -> f User
   -- :: Lens User String
 userFirstNameLens = userNameLens . nameFirstLens
 
@@ -201,6 +199,9 @@ userFirstNameLens = userNameLens . nameFirstLens
 lens :: (s -> a) -> (s -> a -> s) -> (forall f. Functor f => (a -> f a) -> s -> f s)
 lens s2a s2a2a = undefined
 
+
+-- type Lens s a = forall f. Functor f => (a -> f a) -> s -> f s
+-- type Traversal s a = forall f. Applicative f => (a -> f a) -> s -> f s
 
 data Name = Name
   { nameFirst :: String
@@ -212,6 +213,13 @@ namesTraversal
   => (String -> f String) -> Name -> f Name
   -- :: Traversal Name String
 namesTraversal = undefined
+
+toListOf namesTraversal ericName :: [String]
+
+ericName :: Name
+ericName = Name "Eric" "Jelliffe"
+
+-- Traversal [a] a
 
 -- traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
 
