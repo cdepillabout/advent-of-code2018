@@ -41,6 +41,19 @@ fromEith :: (e -> a) -> Either e a -> a
 fromEith _ (Right a) = a
 fromEith f (Left e) = f e
 
+what :: Int -> [a] -> Maybe a
+what _ [] = Nothing
+what 0 (a:_) = Just a
+what n (_:ts) = what (n - 1) ts
+
+getyo :: [Int] -> Int -> Int
+getyo children 0 = 0
+getyo children n = fromMaybe 0 (what (n - 1) children)
+
+yofoldwut :: Metadatas -> [Int] -> Int
+yofoldwut (Metadatas metadatas) [] = sum metadatas
+yofoldwut (Metadatas metadatas) children = sum $ fmap (getyo children) metadatas
+
 main :: IO ()
 main = do
   -- data_ <- readFile "day08-input-simple"
@@ -50,4 +63,5 @@ main = do
   print parsedNums
   let tree = fromEith (\e -> error "badabad") $ runParser parseWholeTree () "fefefefefe" parsedNums
   print tree
-  print $ foldTree (\(Metadatas is) bs -> sum (is <> bs)) tree
+  -- print $ foldTree (\(Metadatas is) bs -> sum (is <> bs)) tree
+  print $ foldTree yofoldwut tree
