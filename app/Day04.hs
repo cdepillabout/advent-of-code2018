@@ -162,6 +162,11 @@ sleepChangeParser :: Parsec.Parsec [GuardRecord] () (UTCTime, UTCTime)
 sleepChangeParser = do
   (,) <$> fallAsleepParser <*> wakeUpParser
 
+-- | Take a list of records per night per guard, and return all the times they
+-- have been asleep.
+getRecsPerGuard :: [GuardSleepTime] -> Map GuardId [(UTCTime, UTCTime)]
+getRecsPerGuard gsts =
+  unionsWith (<>) $ fmap (\(GuardSleepTime i ts) -> singleton i ts) gsts
 
 mySolutionPart1 :: Text -> Text
 mySolutionPart1 input =
@@ -170,11 +175,12 @@ mySolutionPart1 input =
           (error "could not parse the input")
           (parseMaybe parseGuardRecords input)
       sortedGuardRecords = List.sortBy (compare `on` guardRecordTime) guardRecords
-      allSingleDaysRecords =
+      (allSingleDaysRecords :: [GuardSleepTime]) =
         either
           (\err -> error $ "could not parse the sorted recs: " ++ show err)
           id
           (Parsec.parse daysParser "" sortedGuardRecords)
+      (recordsPerGuard :: Map GuardId [(UTCTime, UTCTime)]) = undefined
   -- in LText.toStrict $ pShow (List.take 10 guardRecords)
   -- in LText.toStrict $ pShow (List.take 10 sortedGuardRecords)
   in LText.toStrict $ pShow (List.take 10 allSingleDaysRecords)
