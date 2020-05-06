@@ -469,7 +469,7 @@ executable day09
                     , time
                     , unordered-containers
                     , vector
-  ghc-options:        -threaded -rtsopts -with-rtsopts=-N -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports -Wno-unused-top-binds
+  ghc-options:        -Wall -Wincomplete-record-updates -Wincomplete-uni-patterns -Wno-unused-imports -Wno-unused-top-binds -O2
   -- Commonly used language extensions.
   --
   -- Add language extensions you want to use here so it doesn't clutter the top
